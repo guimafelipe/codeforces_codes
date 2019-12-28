@@ -3,7 +3,7 @@
 using namespace std;
 
 #define INF 1000000000
-#define INFLL 0x3f3f3f3f3f3f3f3fLL 
+#define INFLL 0x3f3f3f3f3f3f3f3fLL
 #define EPS 10e-9
 #define MOD 1000000007
 #define mp make_pair
@@ -37,49 +37,37 @@ int main(){
 		casas[arr[i]]++;
 		casas2[arr[i]]=1;
 	}
+
+	sort(arr, arr+n);
+
+	bool mrc[200100] = {false};
+	int maxi = 0;
+	for(int i = 0; i < n; i++){
+		int x = arr[i];	
+		if(!mrc[x-1]){
+			maxi++;
+			mrc[x-1] = true;
+		} else if(!mrc[x]){
+			maxi++;
+			mrc[x] = true;
+		} else if(!mrc[x+1]){
+			maxi++;
+			mrc[x+1] = true;
+		}
+	}
+
+	bool marc[200100] = {false};
+	int mini = 0;
 	for(int i = 1; i <= n; i++){
-		if(casas[i] == 0){
-			if(casas[i-1] > 1){
-				casas[i]++;
-			} else if(casas[i+1] > 1){
-				casas[i]++;
-				casas[i+1]--;
+		if(casas2[i] > 0){
+			if(!marc[i-1] && !marc[i] && !marc[i+1]){
+				mini++;
+				marc[i+1] = true;
 			}
 		}
 	}
 
-	int maxi = 0;
-	for(int i = 1; i <= n; i++){
-		if(casas[i] > 0) maxi++;
-	}
-
-	for(int i = 1; i <= n; i++){
-		if(casas2[i] == 1 && casas2[i+1] == 1 && casas2[i-1] == 1){
-			casas2[i] = 2;
-			casas2[i-1] = 0;
-			casas2[i+1] = 0;
-		}
-	}
-	for(int i = 1; i <= n; i++){
-		if(casas2[i+1] == 1 && casas2[i-1] == 1){
-			casas2[i] = 2;
-			casas2[i-1] = 0;
-			casas2[i+1] = 0;
-		}
-	}
-	for(int i = 1; i <= n; i++){
-		if(casas2[i+1] == 1 && casas2[i] == 1){
-			casas2[i] = 2;
-			casas2[i+1] = 0;
-		}
-	}
-
-	int mini = 0;
-	for(int i = 1; i <= n; i++){
-		if(casas2[i] > 0) mini++;
-	}
-
 	printf("%d %d\n", mini, maxi);
-	
+
 	return 0;
 }
