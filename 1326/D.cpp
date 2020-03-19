@@ -56,13 +56,15 @@ string getBiggestPal(string ns){
 	reverse(all(nr));
 
 	string s = ns;
+	s.append("&");
 	s.append(nr);
 	string r = nr;
+	r.append("&");
 	r.append(ns);
 
 	vi lpss = LPS(s);
 	vi lpsr = LPS(r);
-
+	
 	/*
 	cout << s << endl;
 
@@ -70,7 +72,7 @@ string getBiggestPal(string ns){
 
 	cout << r << endl;
 	print(lpsr);
-	*/
+	*/	
 
 	if(lpss.back() > lpsr.back()){
 		return s.substr(0, lpss.back());
