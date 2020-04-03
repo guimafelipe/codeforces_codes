@@ -18,7 +18,7 @@ using namespace std;
 typedef long long ll;
 typedef pair<int,int> ii;
 typedef pair<int,ii> iii;
-typedef vector<int> vi;
+typedef vector<ll> vi;
 typedef vector<vi> vvi;
 typedef vector<ii> vii;
 typedef vector<vii> vvii;
@@ -47,25 +47,45 @@ ll invMod(ll a){
 	return x;
 }
 
+pair<ll, ll> calcProb(vll &denos){
+	ll g = 1;
+	for(ll d : denos){
+		g = __lcm(g, d);
+	}
+	ll num = 0, den = g;
+	for(ll d : denos){
+		num += g/d;
+	}
+	ll fing = __gcd(num, den);
+	return mp(num/fing, den/fing);
+}
+
 int main(){
 	ll n;
 	cin >> n;
-	map<ll, ll> presfreq;
-	ll totPres = 0;
-	FOR(i,0,n){
+	vvi dens(1001000, vi());
+	map<ll,ll> presfreq;
+	FOR(_n, 0, n){
 		ll k;
-		cin >> k;
-		totPres += k;
-		FOR(j,0,k){
-			ll p;
-			scanf("%lld", &p);
-			presfreq[p]++;
+		scanf("%d", &k);
+		FOR(_k,0,k){
+			ll item;
+			scanf("%d", &item);
+			dens[item].pb(n*k);
+			presfreq[item]++;
 		}
 	}
+	
+	map<ll, pair<ll, ll>> itemProb;
+	for(int item = 0; item < sz(dens); item++){
+		if(sz(dens[item]) > 0){
+			itemProb[item] = calcProb(dens[item]);
+		}
+	}
+
 	ll num = 0, den = totPres*n;
 	for(auto ent : presfreq){
-		num += (ent.nd*ent.nd);
-		num %= MOD;
+		ll item = ent.st, freq = ent.nd;
 	}
 	cout << num << " " << den << endl;
 	ll ans = (num*invMod(den))%MOD;
